@@ -5,10 +5,26 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      name: "anonymous"
+      name: "anonymous",
+      messages : [{
+        _id: '1',
+        name: "MedellinJS",
+        time: new Date(),
+        text: "Hi there! 😘"
+      }, {
+        _id: '2',
+        name: "MedellinJS",
+        time: new Date(),
+        text: "Welcome to your chat app"
+      }]
     };
 
     this.setName = this.setName.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  componentDidUpdate() {
+    $("#message-list").scrollTop($("#message-list")[0].scrollHeight);
   }
 
   setName(){
@@ -16,7 +32,35 @@ export default class App extends Component {
     this.setState({name: myName});
   }
 
+  sendMessage (event){
+    let text = event.target.value;
+    if(event.keyCode == 13 && text !== "") {
+      let message = {
+        name: this.state.name,
+        text: text,
+        time: new Date()
+      }
+
+      this.setState({ messages: this.state.messages.concat(message)});
+      $('#msg-input').val("");
+    }
+  }
+
  render() {
+   let messagesList = this.state.messages.map(function(message, i){
+     let text = message.text;
+     return (
+       <div key={i} className="message">
+         <a href={"https://twitter.com/"+ message.name +"/"} target="_blank">
+           <img src={"https://twitter.com/"+ message.name +"/profile_image" }className="message_profile-pic" />
+         </a>
+         <a href={"https://twitter.com/"+ message.name +"/"} target="_blank" className="message_username">{message.name}</a>
+         <span className="message_timestamp">{message.time.toLocaleTimeString()}</span>
+         <span className="message_content" dangerouslySetInnerHTML={{__html: text}}></span>
+       </div>
+     )
+   })
+
    return (
      <div id="app">
        <div className="header">
@@ -54,19 +98,7 @@ export default class App extends Component {
 
                  </span>
                </div>
-           <div className="message">
-             <a href="https://twitter.com/MedellinJS/" target="_blank"><img src="https://twitter.com/MedellinJS/profile_image" className="message_profile-pic" /></a>
-                     <a href="https://twitter.com/MedellinJS/" target="_blank" className="message_username">MedellinJS</a>
-             <span className="message_timestamp">1:31 PM</span>
-             <span className="message_content">Hi there! 😘</span>
-           </div>
-
-           <div className="message">
-             <a href="https://twitter.com/MedellinJS/" target="_blank"><img src="https://twitter.com/MedellinJS/profile_image" className="message_profile-pic" /></a>
-                     <a href="https://twitter.com/MedellinJS/" target="_blank" className="message_username">MedellinJS</a>
-             <span className="message_timestamp">1:31 PM</span>
-             <span className="message_content">Welcome to your chat app</span>
-           </div>
+               {messagesList}
              </div>
          </div>
        </div>
@@ -75,7 +107,7 @@ export default class App extends Component {
            <p className="disclaimer">This demo is not created by, affiliated with, or supported by Slack Technologies, Inc.</p>
          </div>
          <div className="input-box">
-           <input type="text" className="input-box_text" />
+           <input id="msg-input" type="text" className="input-box_text" onKeyDown={this.sendMessage}/>
          </div>
        </div>
      </div>

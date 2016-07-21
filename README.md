@@ -196,6 +196,116 @@ Este guía pretende ser una ayuda para realizar el taller de forma autonoma.
   </div>
   ```
 
+3. ### Adding basic messaging functionality
+  Hasta ahora no hemos agregado mayor funcionalidad a nuestra aplicacion, el siguiente paso consistira en crear la funcionalidad basica para los mensajes en nuestro canal.
+
+  3.1. **Messages state initial**
+
+  Para darle un mejor orden a nuestro codigo vamos a crear un array de los mensajes iniciales que aparecen en nuestra aplicacion  (**imports/ui/App.jsx**):
+
+  ```javascript
+  export default class App extends Component {
+
+    constructor() {
+      super();
+      this.state = {
+        name: "anonymous",
+
+        // Block code Insert  
+        messages : [{
+          _id: '1',
+          name: "MedellinJS",
+          time: new Date(),
+          text: "Hi there! 😘"
+        }, {
+          _id: '2',
+          name: "MedellinJS",
+          time: new Date(),
+          text: "Welcome to your chat app"
+        }]
+        // End block code
+
+      };
+
+      this.setName = this.setName.bind(this);
+    }
+
+    // ... all code
+  ```
+
+  3.2. **Refactor messages**
+
+  Como ye tenemos un array de nuestros mensajes iniciales, vamos a recorrerlos para construir el codigo que los mostrara (**imports/ui/App.jsx**):
+
+  ```javascript
+  export default class App extends Component {
+
+    render() {
+
+      // Block code Insert      
+      let messagesList = this.state.messages.map(function(message, i){
+        let text = message.text;
+        return (
+          <div key={i} className="message">
+            <a href={"https://twitter.com/"+ message.name +"/"} target="_blank">
+              <img src={"https://twitter.com/"+ message.name +"/profile_image" }className="message_profile-pic" />
+            </a>
+            <a href={"https://twitter.com/"+ message.name +"/"} target="_blank" className="message_username">{message.name}</a>
+            <span className="message_timestamp">{message.time.toLocaleTimeString()}</span>
+            <span className="message_content" dangerouslySetInnerHTML={{__html: text}}></span>
+          </div>
+        )
+      })
+      // End block code
+
+      // ... All code
+    }    
+  }
+  ```
+
+  3.3. **Send Messages**
+
+  Vamos a crear una funcion que nos permita enviar los mensajes al canal y posteriormente vamos a bindear su contexto. (**imports/ui/App.jsx**):
+
+  ```javascript
+  export default class App extends Component {
+
+    constructor() {
+      //... All code constructor
+
+      // Block code Insert  
+      this.sendMessage = this.sendMessage.bind(this);
+      // End block code  
+    }
+
+    // Block code Insert      
+    sendMessage (event){
+      let text = event.target.value;
+      if(event.keyCode == 13 && text !== "") {
+        let message = {
+          name: this.state.name,
+          text: text,
+          time: new Date()
+        }
+
+        this.setState({ messages: this.state.messages.concat(message)});
+        $('#msg-input').val("");
+      }
+    }
+    // End block code   
+  }
+  ```
+
+  3.4. **OnClic event**
+
+  Vamos asignarle a nuestro html el evento `sendMessage` para ello vamos al elemento `div.input-box` y lo modificamos con el siguiente codigo (**imports/ui/App.jsx**):
+
+  ```html
+  <div className="input-box">
+    <input id="msg-input" type="text" className="input-box_text" onKeyDown={this.sendMessage}/>
+  </div>
+  ```
+
 ## Built With
 
 * [Meteor](https://www.meteor.com/) - Javascript Framework Realtime
