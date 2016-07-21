@@ -43,6 +43,7 @@ End with an example of getting some data out of the system or using it for a lit
 ## Authors
 
 * **Cristian Moreno** - *FullStack JavaScript Developer* - [Github](https://github.com/khriztianmoreno)
+* **Maria Fernanda Serna** - *Backend Developer* - [Github](https://github.com/mafesernaarboleda)
 
 See also the list of [contributors](https://github.com/equitel/FrontEnd/contributors) who participated in this project.
 
