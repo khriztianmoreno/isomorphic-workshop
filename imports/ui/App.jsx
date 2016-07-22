@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Messages from './Messages.jsx';
+
 // App component - represents the whole app
 export default class App extends Component {
   constructor() {
@@ -47,19 +49,6 @@ export default class App extends Component {
   }
 
  render() {
-   let messagesList = this.state.messages.map(function(message, i){
-     let text = message.text;
-     return (
-       <div key={i} className="message">
-         <a href={"https://twitter.com/"+ message.name +"/"} target="_blank">
-           <img src={"https://twitter.com/"+ message.name +"/profile_image" }className="message_profile-pic" />
-         </a>
-         <a href={"https://twitter.com/"+ message.name +"/"} target="_blank" className="message_username">{message.name}</a>
-         <span className="message_timestamp">{message.time.toLocaleTimeString()}</span>
-         <span className="message_content" dangerouslySetInnerHTML={{__html: text}}></span>
-       </div>
-     )
-   })
 
    return (
      <div id="app">
@@ -91,15 +80,7 @@ export default class App extends Component {
          <div className="listings_direct-messages"></div>
          </div>
          <div className="message-history">
-
-             <div id="message-list">
-               <div className="time-divide">
-                 <span className="date">
-
-                 </span>
-               </div>
-               {messagesList}
-             </div>
+           <Messages messages={this.state.messages}/>
          </div>
        </div>
        <div className="footer">

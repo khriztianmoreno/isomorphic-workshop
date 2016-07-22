@@ -305,6 +305,57 @@ Este guía pretende ser una ayuda para realizar el taller de forma autonoma.
     <input id="msg-input" type="text" className="input-box_text" onKeyDown={this.sendMessage}/>
   </div>
   ```
+4. ### Creating the Messages component
+  Ya es hora de comenzar a separar nuestro codigo en otros componentes.
+
+  4.1. **Messages component**
+
+  Crear un archivo con extension `jsx` en la siguiente ruta (**imports/ui/Messages.jsx**) y escribir el siguiente codigo:
+
+  ```javascript
+  import React, { Component } from 'react';
+  import ReactDOM from 'react-dom';
+
+  export default class Messages extends Component {
+    constructor() {
+      super();
+    }
+
+    render(){
+      let messagesList = this.props.messages.map(function(message, i){
+        let text = message.text;
+        return (
+          <div key={i} className="message">
+            <a href={"https://twitter.com/"+ message.name +"/"} target="_blank">
+              <img src={"https://twitter.com/"+ message.name +"/profile_image" }className="message_profile-pic" />
+            </a>
+            <a href={"https://twitter.com/"+ message.name +"/"} target="_blank" className="message_username">{message.name}</a>
+            <span className="message_timestamp">{message.time.toLocaleTimeString()}</span>
+            <span className="message_content" dangerouslySetInnerHTML={{__html: text}}></span>
+          </div>
+        )
+      })
+
+      return (
+        <div id="message-list">
+          <div className="time-divide">
+            <span className="date"></span>
+          </div>
+          {messagesList}
+        </div>
+      )
+
+    }
+
+  }
+  ```
+  4.2. **Add Messages component in App Component**
+
+  En nuestro archivo principal vamos agregar nuestro componente, para ello debemos copiar el siguente fragmento de codigo reemplazando el elemnto `div#message-list` en el metodo `render` (**imports/ui/App.jsx**):
+
+  ```html
+  <Messages messages={this.state.messages}/>
+  ```
 
 ## Built With
 
@@ -316,6 +367,7 @@ Este guía pretende ser una ayuda para realizar el taller de forma autonoma.
 ## Authors
 
 * **Cristian Moreno** - *FullStack JavaScript Developer* - [Github](https://github.com/khriztianmoreno)
+* **Maria Fernanda Serna** - *FullStack Developer* - [Github](https://github.com/mafesernaarboleda)
 
 See also the list of [contributors](https://github.com/equitel/FrontEnd/contributors) who participated in this project.
 
