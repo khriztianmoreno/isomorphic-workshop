@@ -5,7 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
-    "meteor-node-stubs": "0.2.11",
+    "meteor-node-stubs": "0.4.1",
     "react": "15.6.2",
     "react-addons-pure-render-mixin": "15.6.2",
     "react-dom": "15.6.2"
